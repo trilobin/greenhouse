@@ -1,5 +1,5 @@
 # Greenhouse
-*Software for Pico-based greenhouse automation.*
+*Software for Raspberry Pi Pico-based greenhouse automation.*
 
 This initial version can control the power for a device (e.g. humidifier) based on humidity. Once the humidity drops below some threshold (95% RH in the code), the relay is turned on for one minute. The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and a much more beginner friendly than a Raspberry Pi computer.
 
