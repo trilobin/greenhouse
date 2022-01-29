@@ -11,8 +11,8 @@ This initial version can control the power for a device (e.g. humidifier) based 
 - Cut one of the two cables in the power line of the humidifier and connect the ends to COM and NO on the relay opposite to the USB-port. If you do not know what you are doing here, find a friend who does. Don't burn down your house. Depending on the power line, you will have anywhere between 12V and 230V running in that cable. Put everything in a box so that you will not accidentally touch this during operation.
 - Upload the .uf2-file to your Pico (see "Getting started with the Pico" below)
 - Upload main.py and DHT22.py to the Pico (see "Getting started with the Pico" below)
-- Put the sensor and humidifier in a greenhouse and plug in the power. Remember that the pico also needs power through the USB-port.
-- The humidifyer will now run whenever the relative humidity drops below 95%.
+- Put the sensor and humidifier in a greenhouse and plug in the power. Remember that the Pico also needs power through the USB-port.
+- The humidifier will now run whenever the relative humidity drops below 95%.
 
 
 ## Bill of materials
