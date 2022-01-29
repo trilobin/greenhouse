@@ -27,7 +27,7 @@ This initial version can control the power for a device (e.g. humidifier) based 
 The DHT22.py -file from this library needs to be uploaded to your Pico:
 https://github.com/danjperron/PicoDHT22/blob/main/DHT22.py
 
-# Future plans
+# Backlog
 - Adaptive algorithm for better control of humidity
 - Logging of sensor readings
 - Detailed build instructions for everything
