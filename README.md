@@ -24,7 +24,7 @@ This initial version can control the power for a device (e.g. humidifier) based 
 
 
 ## External libraries
-The DHT22.py -file from this library needs to be uploaded to your Pico:
+The DHT22.py -file from this repository needs to be uploaded to your Pico:
 https://github.com/danjperron/PicoDHT22/blob/main/DHT22.py
 
 # Backlog
