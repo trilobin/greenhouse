@@ -37,7 +37,7 @@ https://github.com/danjperron/PicoDHT22/blob/main/DHT22.py
 - Light. Scheduled light cycle. The problem here is that the Pico does not come with a way to set the clock. Dependency: Screen (or buttons)
 - Heat control
 - Ventilation
-~~- Logging of sensor readings (done)~~
+- ~~Logging of sensor readings (done)~~
 
 # Getting started with the Pico
 https://hackspace.raspberrypi.com/books/micropython-pico/pdf/download
