@@ -1,8 +1,9 @@
 # Greenhouse
 *Software for Raspberry Pi Pico-based greenhouse automation.*
 
-Currently in version 6 (development version). This can control the humidity better than previous versions. This software controls the power for a device (e.g. humidifier) based on humidity. The relay is controlled based on an adaptive algorithm that predicts the humidity if everything is kept constant and makes adjustments as needed.
+This software controls the power for a device (e.g. humidifier) based on humidity. The relay is controlled based on an adaptive algorithm that predicts the humidity if everything is kept constant and makes adjustments as needed.
 The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and a much more beginner friendly than a Raspberry Pi computer.
+Currently in version 6. This can control the humidity better than previous versions.
 
 
 ## Assembly
