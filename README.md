@@ -1,7 +1,8 @@
 # Greenhouse
 *Software for Raspberry Pi Pico-based greenhouse automation.*
 
-This initial version can control the power for a device (e.g. humidifier) based on humidity. Once the humidity drops below some threshold (95% RH in the code), the relay is turned on for one minute. The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and a much more beginner friendly than a Raspberry Pi computer.
+Currently in version 6 (development version). This can control the humidity better than previous versions. This software controls the power for a device (e.g. humidifier) based on humidity. The relay is controlled based on an adaptive algorithm that predicts the humidity if everything is kept constant and makes adjustments as needed.
+The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and a much more beginner friendly than a Raspberry Pi computer.
 
 
 ## Assembly
@@ -28,14 +29,14 @@ The DHT22.py -file from this repository needs to be uploaded to your Pico:
 https://github.com/danjperron/PicoDHT22/blob/main/DHT22.py
 
 # Backlog
-- Adaptive algorithm for better control of humidity
-- Logging of sensor readings
+- Adaptive algorithm for better control of humidity (work in progress, newest version already here!)
 - Detailed build instructions for everything
 - Touch screen: A touch screen would enable the device to be controlled during runtime and also give basic info on status
 - Watering. Maybe directions on how to build a water level sensor with some hot glue, two wires, and suitable electronics to wire it up to a Raspberry Pi Pico.
 - Light. Scheduled light cycle. The problem here is that the Pico does not come with a way to set the clock. Dependency: Screen (or buttons)
 - Heat control
 - Ventilation
+~~- Logging of sensor readings (done)~~
 
 # Getting started with the Pico
 https://hackspace.raspberrypi.com/books/micropython-pico/pdf/download
