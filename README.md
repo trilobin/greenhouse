@@ -1,9 +1,12 @@
 # Greenhouse
 *Software for Raspberry Pi Pico-based greenhouse automation.*
 
-This software controls the power for a device (e.g. humidifier) based on humidity. The relay is controlled based on an adaptive algorithm that predicts the humidity if everything is kept constant and makes adjustments as needed.
+This software controls the power for a device (e.g. humidifier) based on humidity. The relay is controlled with a PID-controller (technically PI-controller as the derivative is not included). This setup reached the target RH of 93% in six minutes and kept a steady +-1.5% RH during the remainder of the test (1.5h). The setup consisted of a chamber (approx. 60l) that was not entirely airtight at the bottom, a humidifier connected with a hose to the upper part of the chamber, and the humidifier was controlled with the device described in this repository. A device for ventilation can also be controlled with the same software, but this was not included in the test to keep the setup as simple as possible.
+The setup had difficulties keeping a steady humidity for target humidity of 98% RH, although 95% RH worked well. Further improvements migth be implemented later.
+
+For comparison a test with the same setup where humidity was controlled so that the humidifier was turned on when the humidity dropped below 95% RH and turned off when it exceeded it was run. This resulted in maximum humidity hitting 100% RH and minimum value -10% of desired value. This is a common control logic for non-industrial humidifier control (e.g. https://www.amazon.com/Humidity-Controller-Inkbird-Humidistat-Pre-wired/dp/B01J1E5LWM).
+
 The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and a much more beginner friendly than a Raspberry Pi computer.
-Currently in version 6. This can control the humidity better than previous versions.
 
 
 ## Assembly
@@ -30,13 +33,14 @@ The DHT22.py -file from this repository needs to be uploaded to your Pico:
 https://github.com/danjperron/PicoDHT22/blob/main/DHT22.py
 
 # Backlog
-- Adaptive algorithm for better control of humidity (work in progress, newest version already here!)
-- Detailed build instructions for everything
 - Touch screen: A touch screen would enable the device to be controlled during runtime and also give basic info on status
+- Detailed build instructions for everything
 - Watering. Maybe directions on how to build a water level sensor with some hot glue, two wires, and suitable electronics to wire it up to a Raspberry Pi Pico.
 - Light. Scheduled light cycle. The problem here is that the Pico does not come with a way to set the clock. Dependency: Screen (or buttons)
 - Heat control
-- Ventilation
+- Instrictuions for setting PID-parameters (it might not work out of the box for every setup)
+- ~~Adaptive algorithm for better control of humidity (done)~~
+- ~~Ventilation (done)~~
 - ~~Logging of sensor readings (done)~~
 
 # Getting started with the Pico
