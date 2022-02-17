@@ -4,9 +4,9 @@
 This software controls the power for a device (e.g. humidifier) based on humidity. The relay is controlled with a PID-controller (technically PI-controller as the derivative is not included). This setup reached the target RH of 93% in six minutes and kept a steady +-1.5% RH during the remainder of the test (1.5h). The setup consisted of a chamber (approx. 60l) that was not entirely airtight at the bottom, a humidifier connected with a hose to the upper part of the chamber, and the humidifier was controlled with the device described in this repository. A device for ventilation can also be controlled with the same software, but this was not included in the test to keep the setup as simple as possible.
 The setup had difficulties keeping a steady humidity for target humidity of 98% RH, although 95% RH worked well. Further improvements migth be implemented later.
 
-For comparison a test with the same setup where humidity was controlled so that the humidifier was turned on when the humidity dropped below 95% RH and turned off when it exceeded it was run. This resulted in maximum humidity hitting 100% RH and minimum value -10% of desired value. This is a common control logic for non-industrial humidifier control (e.g. https://www.amazon.com/Humidity-Controller-Inkbird-Humidistat-Pre-wired/dp/B01J1E5LWM).
+For comparison a test with the same setup where humidity was controlled so that the humidifier was turned on when the humidity dropped below 95% RH and turned off when it exceeded the same value was run. This resulted in maximum humidity hitting 100% RH and a minimum value of -10% below desired value. This is a common control logic for non-industrial humidifier control (e.g. https://www.amazon.com/Humidity-Controller-Inkbird-Humidistat-Pre-wired/dp/B01J1E5LWM).
 
-The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and a much more beginner friendly than a Raspberry Pi computer.
+The Raspberry Pi Pico *microcontroller* was chosen as Raspberry Pi *computers* werre sold out at the time of writing. The Pico is also easy to program and much more beginner friendly than a Raspberry Pi computer.
 
 
 ## Assembly
