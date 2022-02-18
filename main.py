@@ -1,6 +1,6 @@
 """
 Greenhouse project - Adaptive humidification
-Version 11. PID-regulator (Only P and I components implemented).
+Version 12. PID-regulator (Only P and I components implemented).
 
 E.g.
 https://www.amazon.com/Humidity-Controller-Inkbird-Humidistat-Pre-wired/dp/B01J1E5LWM
@@ -99,8 +99,6 @@ def control_humidity(verbose=False, test=False):
         # For testing purposes
         sensor = FakeSensor()
 
-    # Initialize list
-    humidity_history = [0.0 for _ in range(HISTORY_LENGTH + 1)]
     # Initialize cumulative (integral!) error:
     integral_err = 0.0
 
@@ -109,7 +107,6 @@ def control_humidity(verbose=False, test=False):
     while True:
         # Continuous loop. Read sensor to estimate parameters
         temperature, current_humidity = sensor.read()
-        humidity_history = push(humidity_history, current_humidity)
 
         # Proportional error:
         proportional_err =  current_humidity - TARGET_HUMIDITY
@@ -218,15 +215,6 @@ class FakeSensor():
         return 23, 55
 
 
-def push(item_list, item):
-    """
-    Function to push one item at the _beginning_ of a list
-    and remove one from the end. Not standard
-    push().
-    """
-    return [item] + [item_1 for item_1 in item_list]
-
-
 def test():
     """
     Function for calling above with suitable test parameters.
@@ -234,7 +222,6 @@ def test():
     global CYCLE_TIME
     CYCLE_TIME = 2.0
     control_humidity(True, True)
-
 
 
 if __name__ == '__main__':
