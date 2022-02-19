@@ -132,7 +132,7 @@ def control_humidity(verbose=False, test=False):
 
         # Proportional error:
         proportional_err =  current_humidity - TARGET_HUMIDITY
-        if current_humidity > 99.9:
+        if current_humidity > 99.9 and current_humidity > TARGET_HUMIDITY:
             # I.e. the DHT22 outputs max value
             # Add error to compensate for the discontinuous point
             # at and above 99.90001. This could potentially make
@@ -277,7 +277,7 @@ class FakeSensor():
 
     def read(self):
         # Make up some reasonable number pair
-        return 23, 55
+        return 23, 99.94
 
 
 def test():
