@@ -277,7 +277,7 @@ class FakeSensor():
 
     def read(self):
         # Make up some reasonable number pair
-        return 23, 99.94
+        return 23, 55
 
 
 def test():
