@@ -28,6 +28,28 @@ where
 proportional_error = current_humidity - TARGET_HUMIDITY
 integral_error = \sum_{0}^{now}(proportional_error)
 (sum of proportional errors since start of device).
+
+Reset
+If the space is vented (e.g. door open) while the software is running, the
+integral error will quickly increase and if the TARGET_HUMIDITY is high, it
+will take a long time for the controller to reach equilibrium again.
+90% RH: If the TARGET_HUMIDITY is 90%, opening the space will quickly reduce
+the humidity to around 30%. The proportional error is then 60% and the integral
+error will add this every cycle (10 seconds). After shutting the space,
+the PID-controller will then blast the humidifier 100% of the time until
+the correction starts to take effect. The maximal correction 10% points per
+cycle, i.e. to correct for the error accumulated in one cycle will then take
+6 cycles. Having the space open for e.g. 5 minutes will cause the controller to
+be out of balance for 30 minutes!
+95% RH: Keeping the space open for 5 minutes will require 1 hour to reset.
+99% RH: Keeping the space open for 5 minutes will require 2.5 hours to reset
+(with the hack of adding 1.0 to the error when hitting max humidity).
+-There clearly is a need to handle this better. Otherwise the device will
+need to be reset every time the space is opened. The code now resets the
+controller if it has been hitting max humidity for 15 minutes. This is a
+step in the right direction, but feels hacky. Reducing the time from 15 minutes
+is also a bit risky, as setting the device for 99% RH took 10 minutes of
+hitting >99.9% RH before it started stabilizing.
 """
 
 import time
@@ -52,14 +74,13 @@ C_P = 2.0  # Coefficient for proportional error. 0.25 implies that an error of
 C_I = 0.03  # Coefficient for integral error. A C_I of 0.01 indicates that an
 # error of 40% over 100 seconds (10 cycles) would change the humidification rate
 # by 4%.
-# Length of "memory" of controller. Used to handle approaching high humidities.
-# If humidity is within tolerance for HISTORY_LENGTH cycles, then we can move
-# on to next target.
-HISTORY_LENGTH = 6
 
 # Time for one cycle. The humidifier and the ventilator are turned on and off
 # once during this time and the humidification rate is re-estimated every cycle.
 CYCLE_TIME = 10  # seconds
+# Log info every 10 minutes and only temperature and humidity
+SPARSE_LOGGING = True
+LOG_COUNT = 0
 
 # Hardware, connection pins for relays:
 # Seems there is a clash with the screen (it is also using pins 6 and 7).
@@ -101,6 +122,7 @@ def control_humidity(verbose=False, test=False):
 
     # Initialize cumulative (integral!) error:
     integral_err = 0.0
+    reset_count = 0
 
     # Sleep 2 seconds to ensure sensor is ready.
     time.sleep_ms(2000)
@@ -117,6 +139,17 @@ def control_humidity(verbose=False, test=False):
             # the device faster move away from humidity above
             # 99.9%.
             proportional_err += 1.0
+            reset_count += 1
+            if reset_count > 90:
+                # The space has been externally vented and the
+                # PID-controller needs to be reset. This is not meant
+                # to happen accidentally, so the error should
+                # continue for 15 minutes (900 seconds) before
+                # this is called.
+                integral_err = 0.0
+                reset_count = 0
+        else:
+            reset_count = 0
 
         # Integral error. The integral error is estimated as a cumulative
         # sum (discrete approximation of integral).
@@ -137,7 +170,11 @@ def control_humidity(verbose=False, test=False):
         humidification_rate = max(0.0, min(100.0, humidification_rate))
         
         # Log details
-        log_details(current_humidity, humidification_rate, proportional_err, integral_err)
+        if SPARSE_LOGGING:
+            log_sparse_details(current_humidity, temperature)
+        else:
+            log_details(current_humidity, humidification_rate, proportional_err, integral_err)
+
         if verbose:
             print("=" * 40)
             print("Humidity: {}% RH".format(current_humidity))
@@ -162,6 +199,34 @@ def control_humidity(verbose=False, test=False):
                 relay_2.value(0)
             time.sleep_ms(int(sleep_time))
         
+
+def log_sparse_details(current_humidity,
+                       current_temperature):
+    """
+    Sparse version of logging. Meant to save data
+    only every 10 minutes to save space.
+    """
+    global LOG_COUNT
+    LOG_COUNT += 1
+    if LOG_COUNT >= 60:
+        # 600 seconds have passed, i.e. 10 minutes.
+        # Write to file.
+        LOG_COUNT = 0
+        try:
+            with open('sparse_log.csv', 'r') as handle:
+                # Just see if the file exists.
+                # Throws an error if it does not.
+                pass
+            with open('sparse_log.csv', 'a') as handle:
+                handle.write('"{}","{}"\n'.format(current_humidity,
+                                                current_temperature))
+        except OSError:
+            # File did not exist. Write headers first.
+            with open('sparse_log.csv', 'a') as handle:
+                handle.write('"Humidity","Temperature"\n')
+                handle.write('"{}","{}"\n'.format(current_humidity,
+                                                current_temperature))
+
 
 def log_details(current_humidity,
                 humidification_rate,
